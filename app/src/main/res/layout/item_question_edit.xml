@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:layout_marginBottom="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/const_expandable"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            android:paddingHorizontal="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutItem"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="56dp">
+
+                <TextView
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/primary_bold"
+                    android:id="@+id/txt_base_model"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="base"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/primary_bold"
+                    android:id="@+id/txt_season_model"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="Season"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/primary_bold"
+                    android:id="@+id/txt_lesson_model"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="lesson"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/primary_bold"
+                    android:id="@+id/txt_difficulty_model"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="difficulty"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <TextView
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:fontFamily="@font/primary_bold"
+                android:id="@+id/txt_desc_model"
+                android:layout_below="@id/linearLayoutItem"
+                android:lineSpacingExtra="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/iv_expand_arrow"
+                app:tint="@color/black"
+                app:srcCompat="@drawable/ic_baseline_arrow_circle_up_24"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/const_expandable">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:gravity="center"
+            android:weightSum="4"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:gravity="center"
+                tools:text="گزینه 1"
+                android:id="@+id/option1"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                tools:text="گزینه 2"
+                android:gravity="center"
+                android:id="@+id/option2"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                tools:text="گزینه 3"
+                android:gravity="center"
+                android:id="@+id/option3"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                tools:text="گزینه 4"
+                android:gravity="center"
+                android:id="@+id/option4"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RadioGroup>
+
+
+        <ImageView
+            android:id="@+id/imgQue"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+            tools:srcCompat="@drawable/ic_plus_24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</com.google.android.material.card.MaterialCardView>

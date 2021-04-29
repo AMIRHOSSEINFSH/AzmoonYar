@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:padding="12dp"
+        android:id="@+id/linear_filter"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:entries="@array/base_options"
+            android:id="@+id/spinner_base"
+            android:layout_weight="1"
+            android:prompt="@string/base"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:entries="@array/lesson_options"
+            android:id="@+id/spinner_lesson"
+            android:layout_weight="1"
+            android:prompt="@string/lesson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:padding="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/linear_filter"
+        android:id="@+id/btn_filter_action"
+        android:text="اعمال"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="ویرایش سوال"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_marginBottom="12dp"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:textAlignment="textStart"
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/Diff_options"
+                    android:id="@+id/spinner_Diff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/base_options"
+                    android:id="@+id/spinner_base"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:entries="@array/lesson_options"
+                    android:id="@+id/spinner_lesson"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:entries="@array/Season_options"
+                    android:id="@+id/spinner_Season"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <EditText
+            android:hint="وارد کردن متن سوال"
+            android:id="@+id/txt_desc_model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:gravity="center"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="#ACA8A8"
+                    android:layout_weight="1"
+                    android:id="@+id/et_option1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_marginRight="24dp"
+                    android:background="#ACA8A8"
+                    android:layout_weight="1"
+                    android:id="@+id/et_option2"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_marginRight="24dp"
+                    android:background="#ACA8A8"
+                    android:layout_weight="1"
+                    android:id="@+id/et_option3"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_marginRight="24dp"
+                    android:background="#ACA8A8"
+                    android:layout_weight="1"
+                    android:id="@+id/et_option4"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:layout_marginTop="12dp"
+                android:id="@+id/radioGroup"
+                android:gravity="center"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:gravity="center"
+                    tools:text="گزینه 1"
+                    android:id="@+id/option1"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    tools:text="گزینه 2"
+                    android:gravity="center"
+                    android:id="@+id/option2"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    tools:text="گزینه 3"
+                    android:gravity="center"
+                    android:id="@+id/option3"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    tools:text="گزینه 4"
+                    android:gravity="center"
+                    android:id="@+id/option4"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RadioGroup>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:weightSum="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/btnCancelEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:backgroundTint="#CA0D0D"
+                    android:text="لغو" />
+
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/AgreeEditProcess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:backgroundTint="#1BA521"
+                    android:text="تایید" />
+
+                <Button
+                    android:layout_weight="1"
+                    android:id="@+id/btnDeleteProcess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:backgroundTint="#621818"
+                    android:text="حذف" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--<Button
+                    android:id="@+id/btnImageInset"
+                    android:text="ارسال تصویر"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />-->
+
+                <Button
+                    android:id="@+id/btnRemoveImage"
+                    android:text="خذف تصویر"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgQue"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:tint="@color/black"
+                tools:srcCompat="@drawable/ic_plus_24dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginHorizontal="8dp"
+                android:id="@+id/rec_choosePic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</ScrollView>
