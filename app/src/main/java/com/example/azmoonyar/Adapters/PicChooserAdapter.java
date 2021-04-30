@@ -1,5 +1,8 @@
 package com.example.azmoonyar.Adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.azmoonyar.Fragments.Dialog.EditDialogFragment;
 import com.example.azmoonyar.R;
 
@@ -60,20 +64,31 @@ public class PicChooserAdapter extends RecyclerView.Adapter<PicChooserAdapter.My
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(fragmentContainer.getContext(), "Clicked!!", Toast.LENGTH_LONG).show();
-                        callBack.onSendBackPath(listPic.get(getAdapterPosition()));
+                        callBack.onSendBackPath(listPic.get(getAdapterPosition()),bitmap);
                     Toast.makeText(fragmentContainer.getContext(), "Image is Selected !!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-
+        Bitmap bitmap;
         public void bind(int position){
-            Glide.with(fragmentContainer.getContext()).load(listPic.get(position)).into(img_Pic);
-            txtName.setText( (new File(listPic.get(position)).getName()) );
+            RequestOptions reqOptions = new RequestOptions()
+                    .fitCenter()
+                    .override(100, 100);
+
+            File file=new File(listPic.get(position));
+            //Bitmap myBitmap = BitmapFactory.decodeFile(file.getPath());
+            //img_Pic.setImageBitmap(myBitmap);
+
+//            bitmap = ((BitmapDrawable) img_Pic.getDrawable()).getBitmap();
+
+            Glide.with(fragmentContainer.getContext()).asBitmap().apply(reqOptions).load(listPic.get(position)).into(img_Pic);
+            bitmap = BitmapFactory.decodeFile(file.getPath());
+            txtName.setText( file.getName() );
 
         }
     }
 
     public interface SelectingPicListener{
-        void onSendBackPath(String path);
+        void onSendBackPath(String path,Bitmap bitmap);
     }
 }

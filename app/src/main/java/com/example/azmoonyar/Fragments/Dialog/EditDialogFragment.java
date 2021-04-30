@@ -48,6 +48,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
 
 public class EditDialogFragment extends DialogFragment implements PicChooserAdapter.SelectingPicListener {
 
@@ -78,16 +80,21 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
     }
 
     public void loadImages() {
-        images=listOfImages(getContext());
+        //images=listOfImages(getContext());
         //Log.i("TAG", "loadImages: "+file.isFile()+"\n");
         images=listOfImages(getContext());
         for (int i = 0; i < images.size(); i++) {
             Log.i("TAG", "loadImages: "+images.get(i)+"\n");
         }
 
-        PicChooserAdapter adapter=new PicChooserAdapter(this,images);
-        recPic.setLayoutManager(new GridLayoutManager(getContext(),4));
-        recPic.setAdapter(adapter);
+       // if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+          //  ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},MY_READ_PERMISSION_CODE);
+       // }else{
+            PicChooserAdapter adapter=new PicChooserAdapter(this,images);
+            recPic.setLayoutManager(new GridLayoutManager(getContext(),4));
+            recPic.setAdapter(adapter);
+        //}
+
 
     }
 
@@ -110,14 +117,21 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
 
         return listOfAllImages;
     }
-
+    private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private void onLoadPermission(){
 
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+        if (EasyPermissions.hasPermissions(getContext(), galleryPermissions)) {
+            loadImages();
+        } else {
+            EasyPermissions.requestPermissions(this, "Access for storage",
+                    201, galleryPermissions);
+        }
+
+       /* if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},MY_READ_PERMISSION_CODE);
         }else{
             loadImages();
-        }
+        }*/
 
     }
 
@@ -185,13 +199,14 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
             et_Op2.setEnabled(false);
             et_Op3.setEnabled(false);
             et_Op4.setEnabled(false);*/
-            if (question.haveImage()){
+            if (question.getImgSourceBinary()!=null){
                 byte[] decodedString = Base64.decode(question.getImgSourceBinary(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 imgQue.setImageBitmap(decodedByte);
+                Log.i("TAG", "onCreateDialog:h ");
             }
             else{
-                imgQue.setImageResource(R.drawable.ic_baseline_image_not_supported_24);
+               // imgQue.setImageResource(R.drawable.ic_baseline_image_not_supported_24);
             }
 
 
@@ -338,27 +353,34 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (radio1.isChecked())
+                    CorrectOp=1;
+                else if(radio2.isChecked())
+                    CorrectOp=2;
+                else if(radio3.isChecked())
+                    CorrectOp=3;
+                else if(radio4.isChecked())
+                    CorrectOp=4;
+
                 if (question!=null) {
+                    if (pathFromRecycler==null)
+                        encodedImage=null;
+
+                    question.setImgSourceBinary(encodedImage);
                     question.setBase(spinnerBase.getSelectedItem().toString());
                     question.setLesson(spinnerLesson.getSelectedItem().toString());
                     question.setDifficulty(spinnerDiff.getSelectedItem().toString());
                     question.setSeason(spinnerSeason.getSelectedItem().toString());
-                    question.setOption1(radio1.getText().toString());
-                    question.setOption2(radio2.getText().toString());
-                    question.setOption3(radio3.getText().toString());
-                    question.setOption4(radio4.getText().toString());
+                    question.setOption1(et_Op1.getText().toString());
+                    question.setOption2(et_Op2.getText().toString());
+                    question.setOption3(et_Op3.getText().toString());
+                    question.setOption4(et_Op4.getText().toString());
                     question.setDescription(txtDesc.getText().toString());
+                    question.setCorrectOption(CorrectOp);
+                    Log.i("TAG", "onClick: "+question.getImgSourceBinary());
                     dialogListener.onEdit(question);
                 } else {
-
-                    if (radio1.isChecked())
-                        CorrectOp=1;
-                    else if(radio2.isChecked())
-                        CorrectOp=2;
-                    else if(radio3.isChecked())
-                        CorrectOp=3;
-                    else if(radio4.isChecked())
-                        CorrectOp=4;
 
                      question = new Question(spinnerBase.getSelectedItem().toString(),
                             spinnerSeason.getSelectedItem().toString(),
@@ -433,21 +455,45 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
         return builder.create();
     }
 
-    public String ConvertImgToBit(ImageView img,String path){
-        Bitmap bm = BitmapFactory.decodeFile(path);
-        img.setImageBitmap(bm);
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 0) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    public String ConvertImgToBit(ImageView img,String path,Bitmap bitmap){
+       // Bitmap bm = BitmapFactory.decodeFile(path);
+        //bitmap=getResizedBitmap(bitmap,100);
+        img.setImageBitmap(/*bm*/bitmap);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos); // bm is the bitmap object
+        /*bm*/bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
         byte[] b = baos.toByteArray();
 
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     @Override
-    public void onSendBackPath(String path) {
+    public void onSendBackPath(String path,Bitmap bitmap) {
         Log.i("TAG", "onSendBackPath: "+path);
         pathFromRecycler=path;
-        encodedImage=ConvertImgToBit(imgQue,pathFromRecycler);
+        if (pathFromRecycler!=null){
+
+            encodedImage=ConvertImgToBit(imgQue,pathFromRecycler,bitmap);
+        }
+
+        else{
+            Toast.makeText(getContext(), "Path is null", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public interface OnEditDialogListener {

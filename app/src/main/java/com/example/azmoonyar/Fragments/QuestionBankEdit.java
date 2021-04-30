@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,11 +142,13 @@ public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnA
 
     @Override
     public void onEdit(Question question) {
+
     int result=questionDao.EditQuestionInfo(question);
+        Log.i("TAG", "onEdit: "+result+" "+question.getCorrectOption());
     if (result>0){
         adapter.onEdit(question);
     }else{
-        Toast.makeText(getContext(), "IS Edited!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "IS Not Edited!!", Toast.LENGTH_SHORT).show();
     }
 
     }

@@ -95,18 +95,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
 
 
     public void onEdit(Question question) {
-        Log.i("TAG", "onEdit: "+question.getLesson());
+        //Log.i("TAG", "onEdit: "+question.getLesson());
 
             for (int i = 0; i < questionList.size(); i++) {
                 if (questionList.get(i).getId()==(question.getId())){
                     questionList.set(i,question);
-                    //notifyItemChanged(i);
-                    notifyDataSetChanged();
+                    notifyItemChanged(i);
+
                     break;
                 }
             }
-
-            Toast.makeText(queBankEditIns.getContext(), "Not Edited", Toast.LENGTH_SHORT).show();
+        Log.i("TAG", "onEdit: "+"it is reached");
+        //notifyDataSetChanged();
+            //Toast.makeText(queBankEditIns.getContext(), "Not Edited", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -196,18 +197,20 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
                     @Override
                     public void onClick(View v) {
                         questionList.get(position).setExpanded(false);
+                        expand_arrow.setRotation(180);
                         expandableLayout.setVisibility(View.GONE);
                         notifyItemChanged(getAdapterPosition());
                     }
                 });
                 //Toast.makeText(queBankEditIns.getContext(), "IS_EXPANDED", Toast.LENGTH_SHORT).show();
                 if (questionList.get(position).getImgSourceBinary()!=null){
+                    Log.i("TAG", "bindhhh: ");
                     byte[] decodedString = Base64.decode(questionList.get(position).getImgSourceBinary(), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     imgQue.setImageBitmap(decodedByte);
                 }
 
-                Log.i("TAG", "bind: "+questionList.get(position).getCorrectOption());
+                //Log.i("TAG", "bind: "+questionList.get(position).getCorrectOption());
                 switch (questionList.get(position).getCorrectOption()){
                     case 1:
                         radio1.setChecked(true);
@@ -238,9 +241,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
                     public void onClick(View v) {
                         Question question = questionList.get(position);
                         question.setExpanded(true);
+                        expand_arrow.setRotation(180);
                         expandableLayout.setVisibility(View.VISIBLE);
                         //Toast.makeText(itemView.getContext(), ""+question.isExpanded()+" "+getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                        notifyItemChanged(getAdapterPosition());
+                        notifyItemChanged(position);
                     }
                 });
 

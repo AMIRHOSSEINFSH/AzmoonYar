@@ -92,6 +92,7 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:rotation="180"
                 android:id="@+id/iv_expand_arrow"
                 app:tint="@color/black"
                 app:srcCompat="@drawable/ic_baseline_arrow_circle_up_24"

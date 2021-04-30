@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:scaleType="centerInside"
             android:layout_marginHorizontal="8dp"
             tools:srcCompat="@drawable/ic_plus_24dp"
             android:id="@+id/img_pic"

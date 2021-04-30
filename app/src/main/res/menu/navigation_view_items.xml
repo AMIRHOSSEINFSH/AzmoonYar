@@ -3,13 +3,13 @@
 
     <item
         android:icon="@drawable/ic_baseline_edit_24"
-        android:title="Edit Question"
+        android:title="Edit and Add Question"
         android:id="@+id/Edit_Sample"
         android:checked="true" />
 
     <item
         android:icon="@drawable/ic_baseline_create_new_folder_24"
-        android:title="Create Question"
+        android:title="Create Exam"
         android:id="@+id/Create_Exam"
          />
 
