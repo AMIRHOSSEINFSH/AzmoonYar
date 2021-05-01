@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.azmoonyar.Adapters.ExamMakerAdapter;
 import com.example.azmoonyar.Adapters.QuestionsAdapter;
 import com.example.azmoonyar.Database.AppDatabase;
 import com.example.azmoonyar.Database.Model.Question;
@@ -32,37 +34,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnAddDialogListener,EditDialogFragment.OnEditDialogListener, BtnSheetFilter.ChangeFilterListener {
+public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnAddDialogListener,
+        EditDialogFragment.OnEditDialogListener, BtnSheetFilter.ChangeFilterListener, ExamMakerAdapter.OnListListener {
 
     private QuestionDao questionDao;
     private QuestionsAdapter adapter;
+    private List<Question> ExamQuList=new ArrayList<>();
     BadgeDrawable badge;
     public QuestionBankEdit() {
         // Required empty public constructor
     }
 
-
-    public static QuestionBankEdit newInstance(String param1, String param2) {
-        QuestionBankEdit fragment = new QuestionBankEdit();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_edit_bank, container, false);
+        return inflater.inflate(R.layout.fragment_bank, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        questionDao= AppDatabase.getAppDatabase(view.getContext()).getTaskDao();
+        questionDao= AppDatabase.getAppDatabase(view.getContext()).getQuestionDao();
         MaterialButton btnFilter=view.findViewById(R.id.btnAddFilter);
         EditText SearchEt=view.findViewById(R.id.et_edit_search);
+        View fabAddExam=view.findViewById(R.id.fab_add_new_Exam);
         badge=((MainActivity)getActivity()).badge;
 
 
@@ -112,11 +107,29 @@ public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnA
 
         //questionDao.addQuestion(new Question("هشتم","بهار","2","12","23","32","20",1,"متوسط","ایران چند استان دارد ؟"));
         List<Question> list=questionDao.getQuestions();
-
         RecyclerView recyclerView=view.findViewById(R.id.rec_showAdd);
         adapter=new QuestionsAdapter(list,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(),RecyclerView.VERTICAL,false));
         recyclerView.setAdapter(adapter);
+
+        fabAddExam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ExamQuList=adapter.SelectedList;
+                FragmentTransaction transaction=getFragmentManager().beginTransaction();
+                ExamCreatorFragment fragment=new ExamCreatorFragment();
+                Toast.makeText(getContext(), ExamQuList.size()+"", Toast.LENGTH_SHORT).show();
+                ArrayList<Question> s=new ArrayList<Question>(ExamQuList);
+                Bundle bundle=new Bundle();
+                bundle.putParcelableArrayList("questionList",s);
+                fragment.setArguments(bundle);
+                //fragment.newInstance(s);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.fragment_main,fragment);
+                transaction.commit();
+            }
+        });
+
 
     }
 
@@ -124,8 +137,9 @@ public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnA
     public void OnAdd(Question question) {
         badge.setNumber(badge.getNumber()+1);
         questionDao.addQuestion(question);
-        adapter.questionList.add(question);
-        adapter.notifyDataSetChanged();
+        adapter.onAdd(question);
+        //adapter.questionList.add(question);
+        //adapter.notifyItemInserted(adapter.questionList.size()-1);
     }
 
     @Override
@@ -163,5 +177,11 @@ public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnA
             }
         }
         adapter.setQuestionList(newList);
+    }
+
+    @Override
+    public void onSendList(List<Question> list) {
+        this.ExamQuList=list;
+        Toast.makeText(getContext(), ExamQuList.size(), Toast.LENGTH_SHORT).show();
     }
 }

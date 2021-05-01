@@ -4,68 +4,54 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.azmoonyar.Adapters.ExamMakerAdapter;
+import com.example.azmoonyar.Adapters.QuestionsAdapter;
+import com.example.azmoonyar.Database.AppDatabase;
+import com.example.azmoonyar.Database.Model.Question;
+import com.example.azmoonyar.Database.QuestionDao;
+import com.example.azmoonyar.MainActivity;
 import com.example.azmoonyar.R;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddExamFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class AddExamFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class AddExamFragment extends Fragment  {
 
-    public AddExamFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddExamFragment newInstance(String param1, String param2) {
-        AddExamFragment fragment = new AddExamFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private QuestionDao questionDao;
+    private QuestionsAdapter adapter;
+    BadgeDrawable badge;
+    List<Question> ExamQuList=new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_exam, container, false);
+        return inflater.inflate(R.layout.fragment_bank, container, false);
     }
 
 
@@ -73,12 +59,34 @@ public class AddExamFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        questionDao= AppDatabase.getAppDatabase(view.getContext()).getQuestionDao();
+        badge=((MainActivity)getActivity()).badge;
 
-        TextView etSearch=view.findViewById(R.id.et_search);
+        TextView SearchEt=view.findViewById(R.id.et_search);
         RecyclerView recQuestionList=view.findViewById(R.id.rec_showAdd);
-        View fab_Add=view.findViewById(R.id.fab_add_new_Exam);
+        View fab_Add=view.findViewById(R.id.fab_main_add_new_task);
+        EditText et_search=view.findViewById(R.id.et_edit_search);
+        Button btnFilter=view.findViewById(R.id.btnAddFilter);
 
+        List<Question> list=questionDao.getQuestions();
+        ExamMakerAdapter adapter=new ExamMakerAdapter(list,this);
+        recQuestionList.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        recQuestionList.setAdapter(adapter);
+
+        fab_Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
+                EditExamFragment fragment=new EditExamFragment();
+                
+                fragmentTransaction.replace(R.id.editExamFragment,new EditExamFragment());
+                fragmentTransaction.commit();*/
+            }
+        });
 
 
     }
+
+
+
 }

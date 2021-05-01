@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ExamCreatorFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:gravity="center"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:text="لطفا ترتیب را مشخص کنید"
+            android:layout_width="match_parent"
+            android:layout_height="56dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_ExamCreatorSort"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="ساخت آزمون"
+        android:id="@+id/fab_add_new_Exam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="12dp"
+        app:icon="@drawable/ic_plus_24dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -109,10 +109,19 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
         String order_by=MediaStore.Video.Media.DATE_TAKEN;
         cursor=context.getContentResolver().query(uri,projection,null,null,order_by+" DESC");
         column_index_data=cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-
+        File file;
         while (cursor.moveToNext()){
             absolutePathOfImage=cursor.getString(column_index_data);
-            listOfAllImages.add(absolutePathOfImage);
+            file=new File(absolutePathOfImage);
+            long fileSizeInBytes = file.length();
+
+            long fileSizeInKB = fileSizeInBytes / 1024;
+
+            Log.i("TAG", "listOfImages: "+" name : "+file.getName());
+            if (fileSizeInKB<200){
+                Log.i("TAG", "listOfImages N: "+" name : "+file.getName()+" Size: "+fileSizeInKB);
+                listOfAllImages.add(absolutePathOfImage);
+            }
         }
 
         return listOfAllImages;
@@ -142,7 +151,13 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit, null, false);
         recPic=view.findViewById(R.id.rec_choosePic);
         builder.setView(view);
-        onLoadPermission();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                onLoadPermission();
+            }
+        }).start();
+        //onLoadPermission();
 
 
         imgQue=view.findViewById(R.id.imgQue);
@@ -380,7 +395,8 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
                     question.setCorrectOption(CorrectOp);
                     Log.i("TAG", "onClick: "+question.getImgSourceBinary());
                     dialogListener.onEdit(question);
-                } else {
+                }
+                else {
 
                      question = new Question(spinnerBase.getSelectedItem().toString(),
                             spinnerSeason.getSelectedItem().toString(),
@@ -473,7 +489,15 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
     public String ConvertImgToBit(ImageView img,String path,Bitmap bitmap){
        // Bitmap bm = BitmapFactory.decodeFile(path);
         //bitmap=getResizedBitmap(bitmap,100);
-        img.setImageBitmap(/*bm*/bitmap);
+        getActivity().runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                img.setImageBitmap(/*bm*/bitmap);
+                // Stuff that updates the UI
+            }
+        });
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         /*bm*/bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
         byte[] b = baos.toByteArray();
@@ -486,8 +510,13 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
         Log.i("TAG", "onSendBackPath: "+path);
         pathFromRecycler=path;
         if (pathFromRecycler!=null){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    encodedImage=ConvertImgToBit(imgQue,pathFromRecycler,bitmap);
+                }
+            }).start();
 
-            encodedImage=ConvertImgToBit(imgQue,pathFromRecycler,bitmap);
         }
 
         else{

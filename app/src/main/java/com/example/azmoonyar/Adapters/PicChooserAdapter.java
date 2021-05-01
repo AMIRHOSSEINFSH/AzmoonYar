@@ -1,5 +1,6 @@
 package com.example.azmoonyar.Adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -32,6 +33,11 @@ public class PicChooserAdapter extends RecyclerView.Adapter<PicChooserAdapter.My
         this.fragmentContainer = fragmentContainer;
         this.listPic = listPic;
         callBack=(SelectingPicListener) fragmentContainer;
+    }
+    Context context;
+    public PicChooserAdapter(Context context,List<String> listPic){
+        this.context=context;
+        this.listPic=listPic;
     }
 
     @NonNull
@@ -71,9 +77,9 @@ public class PicChooserAdapter extends RecyclerView.Adapter<PicChooserAdapter.My
         }
         Bitmap bitmap;
         public void bind(int position){
-            RequestOptions reqOptions = new RequestOptions()
+            /*RequestOptions reqOptions = new RequestOptions()
                     .fitCenter()
-                    .override(100, 100);
+                    .override(100, 100);*/
 
             File file=new File(listPic.get(position));
             //Bitmap myBitmap = BitmapFactory.decodeFile(file.getPath());
@@ -81,7 +87,7 @@ public class PicChooserAdapter extends RecyclerView.Adapter<PicChooserAdapter.My
 
 //            bitmap = ((BitmapDrawable) img_Pic.getDrawable()).getBitmap();
 
-            Glide.with(fragmentContainer.getContext()).asBitmap().apply(reqOptions).load(listPic.get(position)).into(img_Pic);
+            Glide.with(fragmentContainer.getContext()).load(listPic.get(position)).into(img_Pic);
             bitmap = BitmapFactory.decodeFile(file.getPath());
             txtName.setText( file.getName() );
 

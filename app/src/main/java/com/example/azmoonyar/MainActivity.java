@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -22,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.azmoonyar.Adapters.PicChooserAdapter;
 import com.example.azmoonyar.Database.AppDatabase;
 import com.example.azmoonyar.Database.QuestionDao;
 import com.example.azmoonyar.Fragments.AddExamFragment;
@@ -46,20 +50,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //setUpViews();
 
+        //RecyclerView recyclerView=findViewById(R.id.rec);
 
         /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},MY_READ_PERMISSION_CODE);
         }else{
             loadImages();
-        }*/
+        }
 
+        PicChooserAdapter adapter=new PicChooserAdapter(this,images);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+        recyclerView.setAdapter(adapter);*/
         //getExternalFilesDir(Environment.DIRECTORY_DCIM);
 
         //File file=new File();
-        File[] files=getExternalFilesDir(Environment.DIRECTORY_DCIM).listFiles();
+        //File[] files=getExternalFilesDir(Environment.DIRECTORY_DCIM).listFiles();
 
-        Log.i("TAG", "onCreate: "+files.length);
+        //Log.i("TAG", "onCreate: "+files.length);
 
        // Toast.makeText(this, , Toast.LENGTH_LONG).show();
 
@@ -68,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout fragment_container=findViewById(R.id.fragment_main);
         btnView.setSelectedItemId(R.id.Edit_Sample);
 
-        questionDao=AppDatabase.getAppDatabase(this).getTaskDao();
+        questionDao=AppDatabase.getAppDatabase(this).getQuestionDao();
 
         badge=btnView.getOrCreateBadge(R.id.Edit_Sample);
         badge.setVisible(true);
@@ -131,14 +140,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadImages() {
+        //images=listOfImages(this);
+       // File file;
+        //file=new File(images.get(0));
+        //Log.i("TAG", "loadImages: "+file.isFile()+"\n");
         images=listOfImages(this);
-        File file;
-        file=new File(images.get(0));
-        Log.i("TAG", "loadImages: "+file.isFile()+"\n");
-        /*images=listOfImages(this);
         for (int i = 0; i < images.size(); i++) {
             Log.i("TAG", "loadImages: "+images.get(i)+"\n");
-        }*/
+        }
 
     }
 
@@ -153,10 +162,21 @@ public class MainActivity extends AppCompatActivity {
         String order_by=MediaStore.Video.Media.DATE_TAKEN;
         cursor=context.getContentResolver().query(uri,projection,null,null,order_by+" DESC");
         column_index_data=cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-
+        File file;
         while (cursor.moveToNext()){
             absolutePathOfImage=cursor.getString(column_index_data);
-            listOfAllImages.add(absolutePathOfImage);
+            file=new File(absolutePathOfImage);
+            long fileSizeInBytes = file.length();
+
+            long fileSizeInKB = fileSizeInBytes / 1024;
+
+            long fileSizeInMB = fileSizeInKB / 1024;
+            Log.i("TAG", "listOfImages: "+fileSizeInMB+" name : "+file.getName());
+            if (fileSizeInKB<200){
+                Log.i("TAG", "listOfImages N: "+fileSizeInMB+" name : "+file.getName()+" Size: "+fileSizeInKB);
+                listOfAllImages.add(absolutePathOfImage);
+            }
+
         }
 
         return listOfAllImages;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,13 +18,16 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.azmoonyar.Database.AppDatabase;
 import com.example.azmoonyar.Database.Model.Question;
 import com.example.azmoonyar.Database.QuestionDao;
 import com.example.azmoonyar.Fragments.Dialog.EditDialogFragment;
 import com.example.azmoonyar.Fragments.QuestionBankEdit;
 import com.example.azmoonyar.R;
+import com.google.android.material.card.MaterialCardView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
 
     public List<Question> questionList=new ArrayList<>();
     private QuestionBankEdit queBankEditIns;
+    public List<Question> SelectedList;
     QuestionDao questionDao;
 
 
@@ -41,32 +44,55 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
     }
 
     public QuestionsAdapter(List<Question> questionList, QuestionBankEdit queBankEditIns){
+//        Log.i("TAG", "QuestionsAdapter: "+questionList.get(0).getImgSourceBinary());
+        SelectedList=new ArrayList<>();
         this.questionList=questionList;
         this.queBankEditIns = queBankEditIns;
-        questionDao=AppDatabase.getAppDatabase(queBankEditIns.getContext()).getTaskDao();
+        questionDao=AppDatabase.getAppDatabase(queBankEditIns.getContext()).getQuestionDao();
+    }
+
+    public void onAdd(Question question){
+        questionList.add(question);
+        notifyItemInserted(questionList.size()-1);
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_question_edit,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_question,parent,false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.bind(position);
+        MaterialCardView cardView= (MaterialCardView) holder.itemView;
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!cardView.isChecked()){
+                    SelectedList.add(questionList.get(position));
+                    cardView.setChecked(true);
+                }else{
+                    SelectedList.remove(questionList.get(position));
+                    cardView.setChecked(false);
+                }
+
+            }
+        });
+
+
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
+                cardView.setChecked(false);
                 EditDialogFragment dialogFragment=new EditDialogFragment();
                 Bundle bundle=new Bundle();
                 bundle.putParcelable("question",questionList.get(position));
                 dialogFragment.setArguments(bundle);
                 dialogFragment.setCancelable(false);
                 dialogFragment.show(queBankEditIns.getFragmentManager(),null);
-
                 return false;
             }
         });
@@ -83,8 +109,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
             for (int i = 0; i < questionList.size(); i++) {
                 if (questionList.get(i).getId()==(question.getId())){
                     questionList.remove(i);
-                    //notifyItemRemoved(i);
-                    notifyDataSetChanged();
+                    notifyItemRemoved(i);
+                    notifyItemRangeChanged(0,questionList.size()-1);
+                    //notifyDataSetChanged();
                     break;
                 }
             }
@@ -193,21 +220,25 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
             boolean isExpanded = questionList.get(position).isExpanded();
 
             if (isExpanded){
+                imgQue.setImageDrawable(null);
                 expand_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         questionList.get(position).setExpanded(false);
                         expand_arrow.setRotation(180);
                         expandableLayout.setVisibility(View.GONE);
-                        notifyItemChanged(getAdapterPosition());
+                        notifyItemChanged(position);
                     }
                 });
                 //Toast.makeText(queBankEditIns.getContext(), "IS_EXPANDED", Toast.LENGTH_SHORT).show();
                 if (questionList.get(position).getImgSourceBinary()!=null){
-                    Log.i("TAG", "bindhhh: ");
+
+                    Log.i("TAG", "bindhhh: position: "+imgQue.getImageMatrix());
                     byte[] decodedString = Base64.decode(questionList.get(position).getImgSourceBinary(), Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     imgQue.setImageBitmap(decodedByte);
+
+                    //Glide.with(queBankEditIns.getContext()).load(questionList.get(position)).into(imgQue);
                 }
 
                 //Log.i("TAG", "bind: "+questionList.get(position).getCorrectOption());
