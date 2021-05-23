@@ -29,6 +29,7 @@ import com.example.azmoonyar.MainActivity;
 import com.example.azmoonyar.R;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +56,14 @@ public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnA
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         questionDao= AppDatabase.getAppDatabase(view.getContext()).getQuestionDao();
+        view.findViewById(R.id.cardOnlineExamEntrance).setVisibility(View.GONE);
         MaterialButton btnFilter=view.findViewById(R.id.btnAddFilter);
         EditText SearchEt=view.findViewById(R.id.et_edit_search);
         View fabAddExam=view.findViewById(R.id.fab_add_new_Exam);
-        badge=((MainActivity)getActivity()).badge;
+        Fragment fragment=getFragmentManager().findFragmentById(R.id.fragment_main);
+        if (fragment instanceof MainStudentFragment)
+        badge=((MainStudentFragment)fragment).badge;
+
 
 
         SearchEt.addTextChangedListener(new TextWatcher() {
@@ -107,7 +112,7 @@ public class QuestionBankEdit extends Fragment implements EditDialogFragment.OnA
 
         //questionDao.addQuestion(new Question("هشتم","بهار","2","12","23","32","20",1,"متوسط","ایران چند استان دارد ؟"));
         List<Question> list=questionDao.getQuestions();
-        RecyclerView recyclerView=view.findViewById(R.id.rec_showAdd);
+        RecyclerView recyclerView=view.findViewById(R.id.rec_showExam);
         adapter=new QuestionsAdapter(list,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(),RecyclerView.VERTICAL,false));
         recyclerView.setAdapter(adapter);

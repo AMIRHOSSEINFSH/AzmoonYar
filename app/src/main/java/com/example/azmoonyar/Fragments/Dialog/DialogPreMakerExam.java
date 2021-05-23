@@ -13,11 +13,15 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.text.Editable;
 import android.text.Layout;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -40,6 +44,8 @@ public class DialogPreMakerExam extends DialogFragment implements TimePickerDial
     TextView txtDate;
     TextView txtTime;
     Exam exam;
+    EditText etTimeGet;
+    TextView txtTimeShow;
 
 
     @Override
@@ -66,6 +72,34 @@ public class DialogPreMakerExam extends DialogFragment implements TimePickerDial
         btnTime=view.findViewById(R.id.btnTimePicker);
         txtDate=view.findViewById(R.id.txtDatePicker);
         txtTime=view.findViewById(R.id.txtTimePicker);
+        etTimeGet=view.findViewById(R.id.et_timeDuration);
+        txtTimeShow=view.findViewById(R.id.timeDurationShow);
+
+        etTimeGet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                /*int seconds= Integer.parseInt(charSequence.toString());
+                int hour=seconds/3600;
+                int min;
+                if (hour>1){
+                    min = hour % 3600;
+                }else{
+                    min = seconds / 60;
+                }
+                txtTimeShow.setText(hour+":"+min);*/
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,9 +127,9 @@ public class DialogPreMakerExam extends DialogFragment implements TimePickerDial
                             @Override
                             public void onDateSelected(PersianPickerDate persianPickerDate) {
 
-                                exam.setDayName(persianPickerDate.getPersianDay()+"");
+                                exam.setDayName(persianPickerDate.getPersianDayOfWeekName());
                                 exam.setDayNumber(persianPickerDate.getPersianDay()+"");
-                                exam.setMonthName(persianPickerDate.getPersianDayOfWeekName());
+                                exam.setMonthName(persianPickerDate.getPersianMonthName());
                                 exam.setMonthNumber(persianPickerDate.getPersianMonth()+"");
                                 exam.setYear(persianPickerDate.getPersianYear()+"");
                                 txtDate.setText(persianPickerDate.getPersianLongDate());
@@ -121,6 +155,7 @@ public class DialogPreMakerExam extends DialogFragment implements TimePickerDial
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                exam.setTimeOfExam(etTimeGet.getText().toString());
                 listener.onFinish(editText.getText().toString(),exam);
                 dismiss();
             }

@@ -3,14 +3,14 @@
 
     <item
         android:icon="@drawable/ic_baseline_edit_24"
-        android:title="Edit and Add Question"
-        android:id="@+id/Edit_Sample"
+        android:title="بانک سوال/ایجاد آزمون"
+        android:id="@+id/QuestionBank"
         android:checked="true" />
 
     <item
         android:icon="@drawable/ic_baseline_create_new_folder_24"
-        android:title="Create Exam"
-        android:id="@+id/Create_Exam"
+        android:title="بخش آزمون ها"
+        android:id="@+id/ExamSection"
          />
 
 </menu>

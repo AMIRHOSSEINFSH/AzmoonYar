@@ -31,7 +31,7 @@ public class BtnSheetFilter extends BottomSheetDialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        QuestionBankEdit CurrentFragment=(QuestionBankEdit) getFragmentManager().findFragmentById(R.id.fragment_main);
+        QuestionBankEdit CurrentFragment=(QuestionBankEdit) getFragmentManager().findFragmentById(R.id.fragment_main_Student);
         listener=CurrentFragment;
     }
 

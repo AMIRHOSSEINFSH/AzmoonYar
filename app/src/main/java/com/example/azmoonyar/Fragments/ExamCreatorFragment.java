@@ -120,7 +120,7 @@ public class ExamCreatorFragment extends Fragment implements DialogPreMakerExam.
     public void MakePreExam(){
         DialogPreMakerExam preExamMaker=new DialogPreMakerExam();
         Exam exam = new Exam();
-        exam.setQuestionExamList(adapter.preListQuestions);
+        //exam.setQuestionExamList(adapter.preListQuestions);
         Bundle bundle=new Bundle();
         bundle.putParcelable("ExamIns",exam);
         preExamMaker.setArguments(bundle);
@@ -130,14 +130,17 @@ public class ExamCreatorFragment extends Fragment implements DialogPreMakerExam.
     @Override
     public void onFinish(String description, Exam exam) {
         ArrayList<Question> list=adapter.preListQuestions;
+        ArrayList<QuestionExam> questionExams=new ArrayList<>();
         int ref=examDao.getLastPrimaryKey()+1;
         for (int i = 0; i < list.size(); i++) {
             Question question=list.get(i);
             QuestionExam questionExam=new QuestionExam();
             questionExam.ConvertFromQuestion(question);
+            questionExams.add(questionExam);
             questionExam.setExamReference(ref);
             questionExamDao.AddQuestionExam(questionExam);
         }
+        exam.setQuestionExamList(questionExams);
         exam.setDescription(description);
         examDao.AddExam(exam);
         getActivity().onBackPressed();

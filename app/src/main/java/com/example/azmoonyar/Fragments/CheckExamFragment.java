@@ -4,43 +4,41 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.azmoonyar.Adapters.ExamMakerAdapter;
 import com.example.azmoonyar.Adapters.QuestionsAdapter;
+import com.example.azmoonyar.Adapters.ShowExamAdapter;
 import com.example.azmoonyar.Database.AppDatabase;
+import com.example.azmoonyar.Database.ExamDao;
+import com.example.azmoonyar.Database.Model.Exam;
 import com.example.azmoonyar.Database.Model.Question;
 import com.example.azmoonyar.Database.QuestionDao;
 import com.example.azmoonyar.MainActivity;
 import com.example.azmoonyar.R;
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class AddExamFragment extends Fragment  {
+public class CheckExamFragment extends Fragment  {
 
 
-    private QuestionDao questionDao;
-    private QuestionsAdapter adapter;
-    BadgeDrawable badge;
-    List<Question> ExamQuList=new ArrayList<>();
+    BadgeDrawable   badge;
+    List<Exam> ExamList =new ArrayList<>();
+    ShowExamAdapter adapter;
+    ExamDao examDao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,30 +57,27 @@ public class AddExamFragment extends Fragment  {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        questionDao= AppDatabase.getAppDatabase(view.getContext()).getQuestionDao();
+        examDao= AppDatabase.getAppDatabase(view.getContext()).getExamDao();
         badge=((MainActivity)getActivity()).badge;
 
         TextView SearchEt=view.findViewById(R.id.et_search);
-        RecyclerView recQuestionList=view.findViewById(R.id.rec_showAdd);
-        View fab_Add=view.findViewById(R.id.fab_main_add_new_task);
+        RecyclerView recExamList=view.findViewById(R.id.rec_showExam);
+
+        view.findViewById(R.id.fab_main_add_new_task).setVisibility(View.GONE);
+        view.findViewById(R.id.fab_add_new_Exam).setVisibility(View.GONE);
+
         EditText et_search=view.findViewById(R.id.et_edit_search);
         Button btnFilter=view.findViewById(R.id.btnAddFilter);
 
-        List<Question> list=questionDao.getQuestions();
-        ExamMakerAdapter adapter=new ExamMakerAdapter(list,this);
-        recQuestionList.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        recQuestionList.setAdapter(adapter);
 
-        fab_Add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
-                EditExamFragment fragment=new EditExamFragment();
-                
-                fragmentTransaction.replace(R.id.editExamFragment,new EditExamFragment());
-                fragmentTransaction.commit();*/
-            }
-        });
+
+        List<Exam> examList=examDao.getExamList();
+        ExamList.addAll(examList);
+
+        adapter=new ShowExamAdapter(ExamList,this);
+        recExamList.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        recExamList.setAdapter(adapter);
+
 
 
     }

@@ -11,20 +11,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "exam_question")
 public class QuestionExam implements Parcelable{
 
-    public void ConvertFromQuestion(Question question){
-
-        setBase(question.getBase());
-        setSeason(question.getSeason());
-        setLesson(question.getLesson());
-        setOption1(question.getOption1());
-        setOption2(question.getOption2());
-        setOption3(question.getOption3());
-        setOption4(question.getOption4());
-        setCorrectOption(question.getCorrectOption());
-        setDifficulty(question.getDifficulty());
-        setImgSourceBinary(question.getImgSourceBinary());
-    }
-
 
     protected QuestionExam(Parcel in) {
         id = in.readInt();
@@ -36,6 +22,7 @@ public class QuestionExam implements Parcelable{
         option2 = in.readString();
         option3 = in.readString();
         option4 = in.readString();
+        checkedOption = in.readInt();
         CorrectOption = in.readInt();
         difficulty = in.readString();
         imgSourceBinary = in.readString();
@@ -55,6 +42,25 @@ public class QuestionExam implements Parcelable{
             return new QuestionExam[size];
         }
     };
+
+    public void ConvertFromQuestion(Question question){
+        setDescription(question.getDescription());
+        setBase(question.getBase());
+        setSeason(question.getSeason());
+        setLesson(question.getLesson());
+        setOption1(question.getOption1());
+        setOption2(question.getOption2());
+        setOption3(question.getOption3());
+        setOption4(question.getOption4());
+        setCorrectOption(question.getCorrectOption());
+        setDifficulty(question.getDifficulty());
+        setImgSourceBinary(question.getImgSourceBinary());
+    }
+
+
+
+
+
 
     public int getExamReference() {
         return ExamReference;
@@ -79,6 +85,20 @@ public class QuestionExam implements Parcelable{
     private String option2;
     private String option3;
     private String option4;
+    private int    checkedOption;
+
+
+    public int getCheckedOption() {
+        return checkedOption;
+    }
+
+    public void setCheckedOption(int checkedOption) {
+        this.checkedOption = checkedOption;
+    }
+
+    public boolean isHaveImage() {
+        return haveImage;
+    }
 
     public String getImgSourceBinary() {
         return imgSourceBinary;
@@ -226,6 +246,7 @@ public class QuestionExam implements Parcelable{
         parcel.writeString(option2);
         parcel.writeString(option3);
         parcel.writeString(option4);
+        parcel.writeInt(checkedOption);
         parcel.writeInt(CorrectOption);
         parcel.writeString(difficulty);
         parcel.writeString(imgSourceBinary);

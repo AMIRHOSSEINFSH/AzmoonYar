@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,29 +9,48 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <com.airbnb.lottie.LottieAnimationView
-        app:lottie_autoPlay="true"
-        android:id="@+id/lottie_main_animationView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:lottie_rawRes="@raw/exam_main" />
-
     <FrameLayout
-        android:visibility="gone"
-        android:layout_marginBottom="56dp"
         android:id="@+id/fragment_main"
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<com.airbnb.lottie.LottieAnimationView
+            android:scaleType="fitStart"
+            android:rotationX="90"
+            app:lottie_rawRes="@raw/arrow"
+            android:layout_gravity="start|center_vertical"
+            android:elevation="2dp"
+            android:id="@+id/imgNavigateDrawer"
+            app:lottie_autoPlay="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />-->
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgNavigateDrawer"
+            android:elevation="2dp"
+            app:srcCompat="@drawable/ic_baseline_double_arrow_24"
+            android:layout_gravity="start|center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            app:lottie_autoPlay="true"
+            android:id="@+id/lottie_main_animationView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_rawRes="@raw/exam_main" />
+
+    </FrameLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_gravity="start"
+        app:headerLayout="@layout/view_navigation_header"
+        app:menu="@menu/navigation_user_type_items"
+        android:id="@+id/navigationView_main"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation_main"
-        android:visibility="gone"
-        app:menu="@menu/navigation_view_items"
-        app:labelVisibilityMode="selected"
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="56dp" />
 
 
-</FrameLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

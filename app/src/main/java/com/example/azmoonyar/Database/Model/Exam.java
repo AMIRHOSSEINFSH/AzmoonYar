@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 import java.util.ArrayList;
 
 @Entity(tableName = "ExamTable")
-public class Exam implements Parcelable {
+public class Exam implements Parcelable{
 
     public Exam(){
 
@@ -26,19 +26,9 @@ public class Exam implements Parcelable {
     private String hour;
     private String minute;
     private String description;
-
-    protected Exam(Parcel in) {
-        id = in.readInt();
-        dayName = in.readString();
-        dayNumber = in.readString();
-        monthNumber = in.readString();
-        monthName = in.readString();
-        year = in.readString();
-        hour = in.readString();
-        minute = in.readString();
-        description = in.readString();
-        questionExamList = in.createTypedArrayList(Question.CREATOR);
-    }
+    private String timeOfExam;
+    private Float result=null;
+    private boolean isPassed =false;
 
     public static final Creator<Exam> CREATOR = new Creator<Exam>() {
         @Override
@@ -52,6 +42,52 @@ public class Exam implements Parcelable {
         }
     };
 
+    public Float getResult() {
+        return result;
+    }
+
+    public void setResult(Float result) {
+        this.result = result;
+    }
+
+
+    public boolean isPassed() {
+        return isPassed;
+    }
+
+    public void setPassed(boolean passed) {
+        isPassed = passed;
+    }
+
+
+    protected Exam(Parcel in) {
+        id = in.readInt();
+        dayName = in.readString();
+        dayNumber = in.readString();
+        monthNumber = in.readString();
+        monthName = in.readString();
+        year = in.readString();
+        hour = in.readString();
+        minute = in.readString();
+        description = in.readString();
+        timeOfExam = in.readString();
+        isPassed = in.readByte() != 0;
+        questionExamList = in.createTypedArrayList(QuestionExam.CREATOR);
+    }
+
+
+
+    public String getTimeOfExam() {
+        return timeOfExam;
+    }
+
+    public void setTimeOfExam(String timeOfExam) {
+        this.timeOfExam = timeOfExam;
+    }
+
+
+
+
     public String getDescription() {
         return description;
     }
@@ -61,17 +97,17 @@ public class Exam implements Parcelable {
     }
 
     @Ignore()
-    private ArrayList<Question> questionExamList;
+    private ArrayList<QuestionExam> questionExamList;
 
 
 
 
 
-    public ArrayList<Question> getQuestionExamList() {
+    public ArrayList<QuestionExam> getQuestionExamList() {
         return questionExamList;
     }
 
-    public void setQuestionExamList(ArrayList<Question> questionExamList) {
+    public void setQuestionExamList(ArrayList<QuestionExam> questionExamList) {
         this.questionExamList = questionExamList;
     }
 
@@ -157,6 +193,14 @@ public class Exam implements Parcelable {
         parcel.writeString(hour);
         parcel.writeString(minute);
         parcel.writeString(description);
+        parcel.writeString(timeOfExam);
+        if (result == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeFloat(result);
+        }
+        parcel.writeByte((byte) (isPassed ? 1 : 0));
         parcel.writeTypedList(questionExamList);
     }
 }

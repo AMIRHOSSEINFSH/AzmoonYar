@@ -56,7 +56,7 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
     Question question;
     private OnEditDialogListener dialogListener;
     private int CorrectOp;
-    private OnAddDialogListener  addDialogListener;
+    private OnAddDialogListener addDialogListener;
     private String encodedImage;
     private String pathFromRecycler;
     private List<String> images=new ArrayList<>();
@@ -67,7 +67,7 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        Fragment fragment=getFragmentManager().findFragmentById(R.id.fragment_main);
+        Fragment fragment=getFragmentManager().findFragmentById(R.id.fragment_main_Student);
         if (fragment instanceof QuestionBankEdit){
 
             dialogListener =(OnEditDialogListener) fragment;

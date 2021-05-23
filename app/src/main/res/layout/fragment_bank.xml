@@ -40,7 +40,9 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rec_showAdd"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/rec_showExam"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:clipToPadding="false"
@@ -70,6 +72,54 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="12dp"
         app:icon="@drawable/ic_plus_24dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginHorizontal="24dp"
+        android:id="@+id/cardOnlineExamEntrance"
+        app:cardBackgroundColor="@color/colorPrimary"
+        android:padding="12dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="114dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:gravity="center"
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/primary_bold"
+                android:layout_gravity="center_horizontal"
+                android:text="لطفا کد آزمون را که از اموزگار گرفتید جهت بارگیری آزمون وارد نمایید !!"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_marginBottom="2dp"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:textColor="@color/white"
+                android:text="اعمال"
+                android:id="@+id/btnCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

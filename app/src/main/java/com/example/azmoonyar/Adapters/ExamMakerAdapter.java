@@ -17,7 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.azmoonyar.Database.Model.Question;
-import com.example.azmoonyar.Fragments.AddExamFragment;
+import com.example.azmoonyar.Fragments.CheckExamFragment;
 import com.example.azmoonyar.R;
 import com.google.android.material.card.MaterialCardView;
 
@@ -27,10 +27,10 @@ import java.util.List;
 public class ExamMakerAdapter extends RecyclerView.Adapter<ExamMakerAdapter.MyViewHolder> {
 
     List<Question> questionList;
-    List<Question> SelectedList=new ArrayList<>();
-    AddExamFragment fragment;
+    List<Question>    SelectedList=new ArrayList<>();
+    CheckExamFragment fragment;
 
-    public ExamMakerAdapter(List<Question> questions, AddExamFragment fragment){
+    public ExamMakerAdapter(List<Question> questions, CheckExamFragment fragment){
         this.questionList=questions;
         this.fragment=fragment;
     }

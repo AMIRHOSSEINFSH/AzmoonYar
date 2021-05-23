@@ -2,37 +2,31 @@ package com.example.azmoonyar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.azmoonyar.Adapters.PicChooserAdapter;
-import com.example.azmoonyar.Database.AppDatabase;
+import com.example.azmoonyar.Activitys.ExamTimeFragment;
 import com.example.azmoonyar.Database.QuestionDao;
-import com.example.azmoonyar.Fragments.AddExamFragment;
 import com.example.azmoonyar.Fragments.Dialog.EditDialogFragment;
-import com.example.azmoonyar.Fragments.QuestionBankEdit;
+import com.example.azmoonyar.Fragments.ExamCreatorFragment;
+import com.example.azmoonyar.Fragments.MainStudentFragment;
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     public BadgeDrawable badge;
     QuestionDao questionDao;
-
+    public View img_select_charactor;
     List<String> images;
     private static final int MY_READ_PERMISSION_CODE = 201;
 
@@ -50,6 +44,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DrawerLayout mDrawerLayout=findViewById(R.id.drawer_layout);
+
+        img_select_charactor=findViewById(R.id.imgNavigateDrawer);
+        img_select_charactor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+            }
+        });
         //setUpViews();
 
         //RecyclerView recyclerView=findViewById(R.id.rec);
@@ -73,15 +80,6 @@ public class MainActivity extends AppCompatActivity {
        // Toast.makeText(this, , Toast.LENGTH_LONG).show();
 
         LottieAnimationView view=findViewById(R.id.lottie_main_animationView);
-        BottomNavigationView btnView=findViewById(R.id.bottomNavigation_main);
-        FrameLayout fragment_container=findViewById(R.id.fragment_main);
-        btnView.setSelectedItemId(R.id.Edit_Sample);
-
-        questionDao=AppDatabase.getAppDatabase(this).getQuestionDao();
-
-        badge=btnView.getOrCreateBadge(R.id.Edit_Sample);
-        badge.setVisible(true);
-        badge.setNumber(questionDao.getRowCount());
 
 
         view.addAnimatorListener(new Animator.AnimatorListener() {
@@ -93,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 view.setVisibility(View.GONE);
-                btnView.setVisibility(View.VISIBLE);
-                fragment_container.setVisibility(View.VISIBLE);
+                findViewById(R.id.imgNavigateDrawer).setVisibility(View.VISIBLE);
                 setUpViews();
             }
 
@@ -109,35 +106,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if (item.getItemId()==R.id.Edit_Sample){
-
-                    FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_main,new QuestionBankEdit());
-                    transaction.commit();
-
-                }else if(item.getItemId()==R.id.Create_Exam){
-
-                    FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_main,new AddExamFragment());
-                    transaction.commit();
-
-                }
-                return true;
-            }
-        });
-
-        btnView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
-            @Override
-            public void onNavigationItemReselected(@NonNull MenuItem item) {
-
-            }
-        });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.fragment_main);
+
+        if (fragment instanceof ExamTimeFragment) {
+            img_select_charactor.setVisibility(View.VISIBLE);
+            super.onBackPressed();
+        }
+
+        else if (fragment instanceof ExamCreatorFragment){
+            img_select_charactor.setVisibility(View.VISIBLE);
+            super.onBackPressed();
+        }
+
+            else{
+                Toast.makeText(this, "زود اومدی نخواه زود هم بری :))", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+
+
+        //super.onBackPressed();
+
 
     private void loadImages() {
         //images=listOfImages(this);
@@ -200,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpViews() {
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_main,new QuestionBankEdit());
+        transaction.replace(R.id.fragment_main,new MainStudentFragment());
         transaction.commit();
     }
 }
