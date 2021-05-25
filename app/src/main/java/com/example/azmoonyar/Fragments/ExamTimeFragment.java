@@ -1,8 +1,7 @@
-package com.example.azmoonyar.Activitys;
+package com.example.azmoonyar.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,11 +22,9 @@ import com.example.azmoonyar.Database.Model.Exam;
 import com.example.azmoonyar.Database.Model.QuestionExam;
 import com.example.azmoonyar.Database.QuestionExamDao;
 import com.example.azmoonyar.Fragments.Dialog.ExamDialogResult;
-import com.example.azmoonyar.MainActivity;
+import com.example.azmoonyar.Activitys.MainActivity;
 import com.example.azmoonyar.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.example.azmoonyar.Fragments.Dialog.ExamDialogResult.prev;
@@ -75,7 +72,7 @@ public class ExamTimeFragment extends Fragment implements ExamDialogResult.OnCha
                 finished=true;
                 stateType= ExamDialogResult.stateType.TIME_FINISHED;
                 finishAction();
-                Toast.makeText(getContext(), "Exam finished!!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Exam finished!!", Toast.LENGTH_SHORT).show();
             }
         }.start();
 
@@ -102,6 +99,7 @@ public class ExamTimeFragment extends Fragment implements ExamDialogResult.OnCha
         if (!prev){
             ExamDialogResult dialogResult=new ExamDialogResult();
             dialogResult.setCancelable(false);
+            
             Bundle bundle=new Bundle();
             bundle.putSerializable("StateType",stateType);
             bundle.putString("result",calculate(adapter.questionExamList));
@@ -121,7 +119,7 @@ public class ExamTimeFragment extends Fragment implements ExamDialogResult.OnCha
                     count++;
             }
         }
-        String result= String.valueOf(count/(list.size()));
+        String result= String.valueOf((float) count/(list.size()) );
         return result;
     }
 
@@ -134,7 +132,7 @@ public class ExamTimeFragment extends Fragment implements ExamDialogResult.OnCha
         for (int i = 0; i < list.size(); i++) {
 
             if ( list.get(i).getCheckedOption() == list.get(i).getCorrectOption()){
-                    count+=1;
+                    count++;
             }
         }
         for (int i = 0; i < list.size(); i++) {

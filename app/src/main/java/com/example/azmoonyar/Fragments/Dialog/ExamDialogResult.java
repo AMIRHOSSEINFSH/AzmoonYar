@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -12,13 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.azmoonyar.Activitys.ExamTimeFragment;
+import com.example.azmoonyar.Fragments.ExamTimeFragment;
 import com.example.azmoonyar.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 public class ExamDialogResult extends DialogFragment {
 
@@ -51,12 +50,14 @@ public class ExamDialogResult extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View view = LayoutInflater.from(getContext()).inflate(R.layout.result_dialog_exam, null, false);
         builder.setView(view);
+        MaterialCardView cardView=view.findViewById(R.id.materialCard);
+
         LottieAnimationView animationView=view.findViewById(R.id.lottie_animation_Result);
         TextView txtResultContext=view.findViewById(R.id.txt_result);
         MaterialButton btnExit=view.findViewById(R.id.btn_exit_result);
         MaterialButton btnContinue=view.findViewById(R.id.btn_Continue_result);
         txtContext=view.findViewById(R.id.txtContext);
-        RecyclerView recyclerView=view.findViewById(R.id.rec_result_exam);
+        //RecyclerView recyclerView=view.findViewById(R.id.rec_result_exam);
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +85,7 @@ public class ExamDialogResult extends DialogFragment {
         });
 
     if (type == stateType.SELF_FINISH){
-        recyclerView.setVisibility(View.GONE);
+        //recyclerView.setVisibility(View.GONE);
         txtContext.setVisibility(View.GONE);
         txtResultContext.setText("آیا از خروج اطمینان دارید ؟");
         animationView.setAnimation(R.raw.warning);

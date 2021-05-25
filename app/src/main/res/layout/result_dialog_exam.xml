@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<com.google.android.material.card.MaterialCardView
+    app:cardElevation="2dp"
+    android:id="@+id/materialCard"
+    app:cardCornerRadius="56dp"
     android:gravity="center"
     android:paddingStart="12dp"
     android:paddingEnd="12dp"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -44,6 +48,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -65,17 +70,8 @@
 
         </LinearLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
-            android:clipToPadding="false"
-            android:id="@+id/rec_result_exam"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
 
 
-
-
-</ScrollView>
+</com.google.android.material.card.MaterialCardView>

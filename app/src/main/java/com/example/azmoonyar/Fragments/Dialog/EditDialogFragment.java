@@ -369,6 +369,19 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
             @Override
             public void onClick(View v) {
 
+                RadioButton[] radioButton={radio1,radio2,radio3,radio4};
+                boolean tof=false;
+                for (int i = 0; i < radioButton.length-1; i++) {
+                    for (int j = i+1; j < radioButton.length; j++) {
+                        if (radioButton[i].getText().toString().equals(radioButton[j].getText().toString())){
+                            tof=true;
+                            break;
+                        }
+                    }
+                }
+                if ( !tof && !radio1.getText().toString().trim().equals("") && !radio2.getText().toString().trim().equals("") && !radio3.getText().toString().trim().equals("") && !radio4.getText().toString().trim().equals("") &&
+                        (radio1.isChecked() || radio2.isChecked() || radio3.isChecked() || radio4.isChecked())){
+
                 if (radio1.isChecked())
                     CorrectOp=1;
                 else if(radio2.isChecked())
@@ -422,9 +435,13 @@ public class EditDialogFragment extends DialogFragment implements PicChooserAdap
                 else if (radio4.isChecked())
                     question.setCorrectOption(4);*/
 
-
                 dismiss();
                 Toast.makeText(view.getContext(), "Ok", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getContext(), "ایراد/ایراداتی در مقادیر وردی وجود دارد !!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

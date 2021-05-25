@@ -1,9 +1,12 @@
 package com.example.azmoonyar.Adapters;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,12 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.azmoonyar.Activitys.ExamTimeFragment;
+import com.example.azmoonyar.Fragments.ExamTimeFragment;
 import com.example.azmoonyar.Database.Model.Exam;
 import com.example.azmoonyar.Fragments.CheckExamFragment;
+import com.example.azmoonyar.Fragments.ShowDetailExamFragment;
 import com.example.azmoonyar.R;
 
 import java.util.List;
@@ -29,6 +34,7 @@ public class ShowExamAdapter extends RecyclerView.Adapter<ShowExamAdapter.MyView
         this.listExam=listExam;
         this.fragment=fragment;
     }
+
 
     @NonNull
     @Override
@@ -56,6 +62,17 @@ public class ShowExamAdapter extends RecyclerView.Adapter<ShowExamAdapter.MyView
                 }
                 else{
                     Toast.makeText(fragment.getContext(), "You have Passed this\nwait for updating this section ...", Toast.LENGTH_SHORT).show();
+
+                    Bundle bundle=new Bundle();
+                    bundle.putParcelable("exam",listExam.get(position));
+
+                    FragmentTransaction transaction=fragment.getFragmentManager().beginTransaction();
+                    ShowDetailExamFragment fragment=new ShowDetailExamFragment();
+                    fragment.setArguments(bundle);
+                    transaction.setCustomAnimations(R.anim.slide_in,R.anim.fade_out, R.anim.fade_in,R.anim.slide_out);
+                    transaction.replace(R.id.fragment_main,fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                 }
             }
         });
@@ -71,6 +88,7 @@ public class ShowExamAdapter extends RecyclerView.Adapter<ShowExamAdapter.MyView
         TextView txtDate;
         TextView txtDescription;
         ImageView imgIsPassed;
+        ImageView img_doc;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,6 +96,7 @@ public class ShowExamAdapter extends RecyclerView.Adapter<ShowExamAdapter.MyView
             txtTimeDuration=itemView.findViewById(R.id.ExamTime);
             txtDate=itemView.findViewById(R.id.DateExam);
             txtDescription=itemView.findViewById(R.id.ExamDescription);
+            img_doc=itemView.findViewById(R.id.doc_menu_icon);
 
         }
 
@@ -89,6 +108,28 @@ public class ShowExamAdapter extends RecyclerView.Adapter<ShowExamAdapter.MyView
                 imgIsPassed.setColorFilter(Color.GREEN);
             else
                 imgIsPassed.setColorFilter(Color.RED);
+
+
+
+
+            PopupMenu popup = new PopupMenu(fragment.getContext(), img_doc);
+            popup.getMenuInflater()
+                    .inflate(R.menu.popup_menu_doc, popup.getMenu());
+
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return true;
+                }
+            });
+
+            img_doc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popup.show();
+                }
+            });
+
 
 
         }

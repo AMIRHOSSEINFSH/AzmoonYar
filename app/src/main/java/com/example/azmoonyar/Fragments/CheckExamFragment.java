@@ -4,27 +4,26 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionInflater;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.azmoonyar.Adapters.ExamMakerAdapter;
-import com.example.azmoonyar.Adapters.QuestionsAdapter;
 import com.example.azmoonyar.Adapters.ShowExamAdapter;
 import com.example.azmoonyar.Database.AppDatabase;
 import com.example.azmoonyar.Database.ExamDao;
 import com.example.azmoonyar.Database.Model.Exam;
-import com.example.azmoonyar.Database.Model.Question;
-import com.example.azmoonyar.Database.QuestionDao;
-import com.example.azmoonyar.MainActivity;
+import com.example.azmoonyar.Activitys.MainActivity;
 import com.example.azmoonyar.R;
 import com.google.android.material.badge.BadgeDrawable;
 
@@ -43,6 +42,9 @@ public class CheckExamFragment extends Fragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
+
     }
 
     @Override
@@ -60,13 +62,16 @@ public class CheckExamFragment extends Fragment  {
         examDao= AppDatabase.getAppDatabase(view.getContext()).getExamDao();
         badge=((MainActivity)getActivity()).badge;
 
-        TextView SearchEt=view.findViewById(R.id.et_search);
+
+
+        EditText et_search=view.findViewById(R.id.et_edit_search);
+        et_search.setBackground(getResources().getDrawable(R.drawable.background_edit_text));
         RecyclerView recExamList=view.findViewById(R.id.rec_showExam);
 
         view.findViewById(R.id.fab_main_add_new_task).setVisibility(View.GONE);
         view.findViewById(R.id.fab_add_new_Exam).setVisibility(View.GONE);
 
-        EditText et_search=view.findViewById(R.id.et_edit_search);
+
         Button btnFilter=view.findViewById(R.id.btnAddFilter);
 
 

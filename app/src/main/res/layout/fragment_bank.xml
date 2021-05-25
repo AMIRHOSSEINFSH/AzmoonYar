@@ -19,21 +19,43 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/ic_search_gray_24dp"
             android:hint="Search . . ."
-            android:background="@drawable/background_edit_text"
+
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="12dp"
             android:layout_width="match_parent"
             android:layout_height="36dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddFilter"
-            app:layout_scrollFlags="scroll|enterAlways"
-           app:backgroundTint="#5D564B"
-            android:text="فیلتر"
+        <RelativeLayout
             android:layout_marginTop="8dp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_centerInParent="true"
+                android:id="@+id/btnAddFilter"
+                app:backgroundTint="#5D564B"
+                android:text="فیلتر"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.button.MaterialButton
+                android:gravity="center"
+                app:cornerRadius="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_alignParentEnd="true"
+                android:drawableEnd="@drawable/ic_reset_search"
+                app:backgroundTint="#FFF"
+                android:id="@+id/img_reset"
+                android:layout_width="56dp"
+                android:layout_height="56dp" />
+
+        </RelativeLayout>
+
+
+
+
 
 
     </com.google.android.material.appbar.AppBarLayout>

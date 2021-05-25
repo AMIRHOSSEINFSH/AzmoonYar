@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ public class BtnSheetFilter extends BottomSheetDialogFragment {
 
 
     private ChangeFilterListener listener;
+    private String base;
+    private String lesson;
 
     public BtnSheetFilter(/*ChangeFilterListener listener*/){
 
@@ -50,12 +54,47 @@ public class BtnSheetFilter extends BottomSheetDialogFragment {
         Button btnOk=view.findViewById(R.id.btn_filter_action);
         Spinner lessonSpinner=view.findViewById(R.id.spinner_lesson);
         Spinner BaseSpinner=view.findViewById(R.id.spinner_base);
+        CheckBox checkLesson=view.findViewById(R.id.checkbox_lesson);
+        CheckBox checkBase=view.findViewById(R.id.checkbox_base);
+
+        lessonSpinner.setEnabled(false);
+        BaseSpinner.setEnabled(false);
+        checkLesson.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isEnable) {
+                if (isEnable){
+                    lessonSpinner.setEnabled(true);
+                    lesson=lessonSpinner.getSelectedItem().toString();
+                }
+                else{
+                    lesson=null;
+                    lessonSpinner.setEnabled(false);
+                }
+                //lessonSpinner.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        checkBase.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isEnable) {
+                if (isEnable){
+                    BaseSpinner.setEnabled(true);
+                    base=BaseSpinner.getSelectedItem().toString();
+                }
+                else{
+                    base=null;
+                    BaseSpinner.setEnabled(false);
+                }
+                //BaseSpinner.setVisibility(isEnable ? View.VISIBLE : View.GONE);
+            }
+        });
 
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!BaseSpinner.getSelectedItem().toString().equals("") && !lessonSpinner.getSelectedItem().toString().equals("")){
-                    listener.OnChangeFilterSearch(BaseSpinner.getSelectedItem().toString(),lessonSpinner.getSelectedItem().toString());
+
+                    listener.OnChangeFilterSearch(base,lesson);
                 }
 
             }

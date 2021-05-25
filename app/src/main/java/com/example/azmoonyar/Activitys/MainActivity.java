@@ -1,4 +1,4 @@
-package com.example.azmoonyar;
+package com.example.azmoonyar.Activitys;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,21 +15,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.azmoonyar.Activitys.ExamTimeFragment;
+import com.example.azmoonyar.Fragments.ExamTimeFragment;
 import com.example.azmoonyar.Database.QuestionDao;
 import com.example.azmoonyar.Fragments.Dialog.EditDialogFragment;
 import com.example.azmoonyar.Fragments.ExamCreatorFragment;
 import com.example.azmoonyar.Fragments.MainStudentFragment;
+import com.example.azmoonyar.R;
 import com.google.android.material.badge.BadgeDrawable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -123,8 +123,9 @@ public class MainActivity extends AppCompatActivity {
             img_select_charactor.setVisibility(View.VISIBLE);
             super.onBackPressed();
         }
-
             else{
+
+            super.onBackPressed();
                 Toast.makeText(this, "زود اومدی نخواه زود هم بری :))", Toast.LENGTH_SHORT).show();
             }
 

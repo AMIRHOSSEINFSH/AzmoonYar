@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AzmoonYar">
-        <activity android:name=".Activitys.ExamTimeFragment"></activity>
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".Activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
